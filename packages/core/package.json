@@ -1,6 +1,6 @@
 {
   "name": "@fluent-emoji-converter/core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Core logic for Fluent Emoji Converter",
   "main": "dist/index.js",
@@ -29,7 +29,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:cov": "vitest run --coverage",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "push": "pnpm build && pnpm publish --access public"
   },
   "dependencies": {
     "unicode-emoji-json": "^0.8.0"
