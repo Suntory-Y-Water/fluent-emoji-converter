@@ -17,12 +17,17 @@ defaults:
   run:
     shell: bash
 
-permissions:
-  contents: read
-  security-events: write
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   actions-security:
+    permissions:
+      contents: read
+      security-events: write
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:

@@ -17,12 +17,16 @@ defaults:
   run:
     shell: bash
 
-permissions:
-  contents: read
-  pull-requests: write
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   typescript-ci:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     timeout-minutes: 5
     env:
