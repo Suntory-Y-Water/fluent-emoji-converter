@@ -1,5 +1,5 @@
-import eslint from "@eslint/js";
-import tseslint from "typescript-eslint";
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
 export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeCheckedOnly,
@@ -14,48 +14,48 @@ export default tseslint.config(
   {
     // base rules
     rules: {
-      "@typescript-eslint/no-redeclare": "error",
-      "@typescript-eslint/prefer-ts-expect-error": "error",
-      "@typescript-eslint/no-floating-promises": "error",
-      "@typescript-eslint/only-throw-error": "error",
-      "no-throw-literal": "off",
+      '@typescript-eslint/no-redeclare': 'error',
+      '@typescript-eslint/prefer-ts-expect-error': 'error',
+      '@typescript-eslint/no-floating-promises': 'error',
+      '@typescript-eslint/only-throw-error': 'error',
+      'no-throw-literal': 'off',
     },
   },
   {
     // warning for refactoring
     rules: {
-      "@typescript-eslint/no-empty-interface": "warn",
-      "@typescript-eslint/no-empty-object-type": "warn",
-      "@typescript-eslint/no-empty-function": "warn",
-      "@typescript-eslint/no-explicit-any": "warn",
-      "@typescript-eslint/no-deprecated": "warn",
-      "@typescript-eslint/await-thenable": "warn",
-      "@typescript-eslint/require-await": "warn",
-      "@typescript-eslint/consistent-type-imports": [
-        "warn",
+      '@typescript-eslint/no-empty-interface': 'warn',
+      '@typescript-eslint/no-empty-object-type': 'warn',
+      '@typescript-eslint/no-empty-function': 'warn',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-deprecated': 'warn',
+      '@typescript-eslint/await-thenable': 'warn',
+      '@typescript-eslint/require-await': 'warn',
+      '@typescript-eslint/consistent-type-imports': [
+        'warn',
         {
-          prefer: "type-imports",
+          prefer: 'type-imports',
           disallowTypeAnnotations: false,
-          fixStyle: "inline-type-imports",
+          fixStyle: 'inline-type-imports',
         },
       ],
-      "@typescript-eslint/ban-ts-comment": [
-        "warn",
+      '@typescript-eslint/ban-ts-comment': [
+        'warn',
         {
-          "ts-ignore": true,
-          "ts-expect-error": "allow-with-description",
+          'ts-ignore': true,
+          'ts-expect-error': 'allow-with-description',
         },
       ],
-      "prefer-const": "warn",
-      complexity: ["warn", { max: 7 }],
-      "no-console": "warn",
+      'prefer-const': 'warn',
+      complexity: ['warn', { max: 7 }],
+      'no-console': 'warn',
     },
   },
   {
     // allow console in examples
-    files: ["examples/*.ts"],
+    files: ['examples/*.ts'],
     rules: {
-      "no-console": "off",
+      'no-console': 'off',
     },
-  },
+  }
 );

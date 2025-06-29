@@ -7,7 +7,6 @@ export default {
   semi: true,
   singleQuote: true,
   jsxSingleQuote: true,
-  trailingComma: "es5",
+  trailingComma: 'es5',
   bracketSpacing: true,
-  plugins: ["prettier-plugin-tailwindcss"],
 };

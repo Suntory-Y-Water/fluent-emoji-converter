@@ -1,0 +1,65 @@
+name: TypeScript CI
+
+on:
+  push:
+    branches:
+      - 'feature-*'
+      - 'feature/*'
+      # 依存関係が更新されたときにも一応チェックする
+      - 'dependabot/*'
+    paths: ['**/*.ts', '**/*.tsx', '**/*.js', '.github/**', '**/*.json']
+  pull_request:
+    branches:
+      - main
+    paths: ['**/*.ts', '**/*.tsx', '**/*.js', '.github/**', '**/*.json']
+
+defaults:
+  run:
+    shell: bash
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  typescript-ci:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      TZ: Asia/Tokyo
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+        with:
+          version: '9'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Security audit
+        run: |
+          echo "パッケージのセキュリティ監査を実行します"
+          pnpm audit --audit-level high
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Type check
+        run: pnpm run typecheck
+
+      - name: Test
+        run: pnpm run test
