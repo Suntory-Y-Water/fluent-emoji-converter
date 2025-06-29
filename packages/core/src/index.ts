@@ -9,19 +9,7 @@ import type {
   EmojiData,
   FluentEmojiConfig,
 } from '@fluent-emoji-converter/types';
-import emojiData from 'unicode-emoji-json';
-
-// unicode-emoji-jsonの型定義がないため、型を定義
-interface UnicodeEmojiData {
-  [key: string]: {
-    name: string;
-    slug: string;
-    group: string;
-    emoji_version: string;
-    unicode_version: string;
-    skin_tone_support: boolean;
-  };
-}
+import emojiData from 'unicode-emoji-json' with { type: 'json' };
 
 const DEFAULT_CONFIG: FluentEmojiConfig = {
   baseUrl:
@@ -33,7 +21,7 @@ const DEFAULT_CONFIG: FluentEmojiConfig = {
  * 絵文字データを検索して対応する情報を取得
  */
 function findEmojiData(emoji: string): EmojiData | null {
-  const typedEmojiData = emojiData as UnicodeEmojiData;
+  const typedEmojiData = emojiData;
   const found = Object.entries(typedEmojiData).find(([key]) => key === emoji);
   if (!found) return null;
 
@@ -111,9 +99,9 @@ function getFileExtension(style: EmojiStyle): string {
 function fixEmojiSlug(slug: string): string {
   // 既知の差異を修正
   const fixes: Record<string, string> = {
-    'smiling_face_with_heart_eyes': 'smiling_face_with_heart-eyes',
+    smiling_face_with_heart_eyes: 'smiling_face_with_heart-eyes',
   };
-  
+
   return fixes[slug] || slug;
 }
 

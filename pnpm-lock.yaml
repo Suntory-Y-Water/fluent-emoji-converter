@@ -55,24 +55,11 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.0.7)
 
-  packages/lib:
+  packages/example:
     dependencies:
-      '@fluent-emoji-converter/core':
+      fluent-emoji-converter:
         specifier: workspace:*
         version: link:../core
-    devDependencies:
-      '@fluent-emoji-converter/types':
-        specifier: workspace:*
-        version: link:../types
-      '@vitest/coverage-v8':
-        specifier: ^3.2.4
-        version: 3.2.4(vitest@3.2.4(@types/node@24.0.7))
-      typescript:
-        specifier: ^5.8.3
-        version: 5.8.3
-      vitest:
-        specifier: ^3.2.4
-        version: 3.2.4(@types/node@24.0.7)
 
   packages/types:
     devDependencies:

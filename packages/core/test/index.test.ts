@@ -2,8 +2,7 @@
  * Fluent Emoji Converter のコア変換ロジックのテスト
  */
 import { describe, it, expect } from 'vitest';
-import { convertEmoji } from './index';
-import emojiData from 'unicode-emoji-json';
+import { convertEmoji } from '../src/index';
 
 describe('convertEmoji', () => {
   it('基本的な絵文字変換ができる', () => {
