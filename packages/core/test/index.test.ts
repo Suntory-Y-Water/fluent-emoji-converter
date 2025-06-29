@@ -112,4 +112,22 @@ describe('convertEmoji', () => {
     const result = convertEmoji({ emoji: 'invalid' });
     expect(result).toBe('invalid');
   });
+
+  it('不正なスタイル指定の場合はデフォルトスタイルにフォールバック', () => {
+    // @ts-ignore - 意図的に不正な値をテスト
+    const result = convertEmoji({ emoji: '😀', style: 'invalid-style' });
+    expect(result).toContain('/Flat/');
+    expect(result).toContain('_flat.svg');
+  });
+
+  it('不正な肌色指定の場合はデフォルト肌色にフォールバック', () => {
+    const result = convertEmoji({
+      emoji: '👋',
+      style: 'flat',
+      // @ts-ignore - 意図的に不正な値をテスト
+      skinTone: 'invalid-skin-tone',
+    });
+    expect(result).toContain('/Default/Flat/');
+    expect(result).toContain('_flat_default.svg');
+  });
 });
