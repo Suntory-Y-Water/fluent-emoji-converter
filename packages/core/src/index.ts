@@ -9,7 +9,7 @@ import type {
   EmojiData,
   FluentEmojiConfig,
 } from '@fluent-emoji-converter/types';
-import emojiData from 'unicode-emoji-json' with { type: 'json' };
+import emojiData from 'unicode-emoji-json';
 
 const DEFAULT_CONFIG: FluentEmojiConfig = {
   baseUrl:
