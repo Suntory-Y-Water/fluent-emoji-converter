@@ -1,28 +1,43 @@
 {
-  "name": "fluent-emoji-converter",
+  "name": "fluent-emoji-converter-monorepo",
   "version": "0.0.1",
   "type": "module",
-  "description": "",
-  "main": "index.js",
+  "private": true,
+  "description": "Monorepo for Fluent Emoji Converter",
   "scripts": {
-    "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "test:cov": "vitest run --coverage",
-    "lint": "eslint . --quiet",
-    "lint:warn": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "build": "pnpm --filter \"./packages/*\" build",
+    "test": "pnpm --filter \"./packages/*\" test",
+    "test:cov": "pnpm --filter \"./packages/*\" test:cov",
+    "typecheck": "pnpm --filter \"./packages/*\" typecheck",
+    "lint": "pnpm --filter \"./packages/*\" lint",
+    "lint:warn": "pnpm --filter \"./packages/*\" lint:warn",
+    "lint:fix": "pnpm --filter \"./packages/*\" lint:fix",
+    "dev": "pnpm --filter \"./packages/*\" dev"
   },
-  "keywords": [],
+  "keywords": [
+    "emoji",
+    "fluent",
+    "converter",
+    "typescript"
+  ],
   "author": "suntory-n-water",
   "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^9.30.0",
     "@types/node": "^24.0.7",
     "@vitest/coverage-v8": "^3.2.4",
+    "esbuild": "^0.19.0",
     "eslint": "^9.30.0",
     "prettier": "^3.6.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.35.0",
     "vitest": "^3.2.4"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "*"
+      ]
+    }
   }
 }
