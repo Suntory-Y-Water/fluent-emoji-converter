@@ -10,12 +10,23 @@ import type {
 } from './types/index.js';
 import emojiData from 'unicode-emoji-json/data-by-emoji.json' with { type: 'json' };
 
+// Constants
 const BASE_URL =
   'https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets';
 const DEFAULT_STYLE: EmojiStyle = 'flat';
+const FILE_EXTENSION_3D = 'png';
+const FILE_EXTENSION_DEFAULT = 'svg';
+const SLUG_FIXES: Record<string, string> = {
+  smiling_face_with_heart_eyes: 'smiling_face_with_heart-eyes',
+};
+const FALLBACK_SKIN_TONE: SkinTone = 'default';
+const HIGH_CONTRAST_STYLE: EmojiStyle = 'high-contrast';
+const THREED_STYLE: EmojiStyle = '3d';
 
 /**
  * 絵文字データを検索して対応する情報を取得
+ * @param emoji - 検索対象の絵文字
+ * @returns 絵文字データまたはnull
  */
 function findEmojiData(emoji: string): EmojiData | null {
   const typedEmojiData = emojiData;
@@ -36,8 +47,10 @@ function findEmojiData(emoji: string): EmojiData | null {
 
 /**
  * スタイル名を URL パス用の文字列に変換
+ * @param style - 絵文字スタイル
+ * @returns URLパス用の文字列
  */
-function styleToPath(style: EmojiStyle): string {
+function convertStyleToPathFormat(style: EmojiStyle): string {
   switch (style) {
     case '3d':
       return '3D';
@@ -54,8 +67,10 @@ function styleToPath(style: EmojiStyle): string {
 
 /**
  * 肌色トーンを URL パス用の文字列に変換
+ * @param skinTone - 肌色トーン
+ * @returns URLパス用の文字列
  */
-function skinToneToPath(skinTone: SkinTone): string {
+function convertSkinToneToPathFormat(skinTone: SkinTone): string {
   switch (skinTone) {
     case 'default':
       return 'Default';
@@ -75,63 +90,88 @@ function skinToneToPath(skinTone: SkinTone): string {
 }
 
 /**
- * 絵文字名をURL用にフォーマット（先頭大文字 + URLエンコード）
+ * スタイル値を正規化してパラメータ用の文字列に変換
+ * @param style - 絵文字スタイル
+ * @returns 正規化されたパラメータ用文字列
  */
-function formatEmojiNameForUrl(name: string): string {
-  // 先頭を大文字にして、スペースをURLエンコード
-  const capitalized = name.charAt(0).toUpperCase() + name.slice(1);
-  return encodeURIComponent(capitalized);
+function normalizeStyleForParam(style: EmojiStyle): string {
+  switch (style) {
+    case '3d':
+      return '3d';
+    case 'color':
+      return 'color';
+    case 'flat':
+      return 'flat';
+    case 'high-contrast':
+      return 'high_contrast';
+    default:
+      return 'flat';
+  }
 }
 
 /**
- * ファイル拡張子を取得（3Dはpng、その他はsvg）
+ * 肌色値を正規化してパラメータ用の文字列に変換
+ * @param skinTone - 肌色トーン
+ * @returns 正規化されたパラメータ用文字列
  */
-function getFileExtension(style: EmojiStyle): string {
-  return style === '3d' ? 'png' : 'svg';
-}
-
-/**
- * 特定の絵文字のslugを修正
- */
-function fixEmojiSlug(slug: string): string {
-  // 既知の差異を修正
-  const fixes: Record<string, string> = {
-    smiling_face_with_heart_eyes: 'smiling_face_with_heart-eyes',
-  };
-
-  return fixes[slug] || slug;
+function normalizeSkinToneForParam(skinTone: SkinTone): string {
+  switch (skinTone) {
+    case 'default':
+      return 'default';
+    case 'light':
+      return 'light';
+    case 'medium-light':
+      return 'medium_light';
+    case 'medium':
+      return 'medium';
+    case 'medium-dark':
+      return 'medium_dark';
+    case 'dark':
+      return 'dark';
+    default:
+      return 'default';
+  }
 }
 
 /**
  * FluentEmoji の URL を生成
+ * @param emojiData - 絵文字データ
+ * @param style - 絵文字スタイル
+ * @param skinTone - 肌色トーン
+ * @returns 生成されたURL
  */
 function generateFluentEmojiUrl(
   emojiData: EmojiData,
   style: EmojiStyle,
   skinTone?: SkinTone
 ): string {
-  const stylePath = styleToPath(style);
-  const styleParam = style.replace('-', '_');
-  const encodedName = formatEmojiNameForUrl(emojiData.name);
-  const extension = getFileExtension(style);
-  const fixedSlug = fixEmojiSlug(emojiData.slug);
+  // 適切な肌色トーンを決定
+  const effectiveSkinTone = !emojiData.supportsSkinTone
+    ? undefined
+    : skinTone || FALLBACK_SKIN_TONE;
 
-  // 肌色対応絵文字の場合、skinToneが未指定なら'default'を使用
-  if (emojiData.supportsSkinTone && (!skinTone || skinTone === 'default')) {
-    skinTone = 'default';
-  }
+  // URL生成のためのパラメータを準備
+  const stylePath = convertStyleToPathFormat(style);
+  const styleParam = normalizeStyleForParam(style);
+  // 先頭を大文字にして、スペースをURLエンコード
+  const capitalized =
+    emojiData.name.charAt(0).toUpperCase() + emojiData.name.slice(1);
+  const encodedName = encodeURIComponent(capitalized);
+  const extension =
+    style === THREED_STYLE ? FILE_EXTENSION_3D : FILE_EXTENSION_DEFAULT;
+  const fixedSlug = SLUG_FIXES[emojiData.slug] || emojiData.slug;
 
-  // 肌色非対応の場合
+  // 肌色非対応絵文字の場合
   if (!emojiData.supportsSkinTone) {
     return `${BASE_URL}/${encodedName}/${stylePath}/${fixedSlug}_${styleParam}.${extension}`;
   }
 
-  // 肌色対応の場合（必ずskinToneが存在）
-  const skinTonePath = skinToneToPath(skinTone!);
-  const skinToneParam = skinTone!.replace('-', '_');
+  // 肌色対応絵文字の場合
+  const skinTonePath = convertSkinToneToPathFormat(effectiveSkinTone!);
+  const skinToneParam = normalizeSkinToneForParam(effectiveSkinTone!);
 
   // ハイコントラストで肌色指定がある場合はデフォルトにフォールバック
-  if (style === 'high-contrast') {
+  if (style === HIGH_CONTRAST_STYLE) {
     return `${BASE_URL}/${encodedName}/Default/${stylePath}/${fixedSlug}_${styleParam}_default.${extension}`;
   }
 
@@ -140,23 +180,20 @@ function generateFluentEmojiUrl(
 
 /**
  * 絵文字を FluentEmoji の URL に変換する
+ * @param options - 変換オプション
+ * @returns FluentEmojiのURLまたは元の絵文字
  */
 export function convertEmoji(options: ConvertOptions): string {
   const { emoji, style = DEFAULT_STYLE, skinTone } = options;
 
-  try {
-    const emojiInfo = findEmojiData(emoji);
+  const emojiInfo = findEmojiData(emoji);
 
-    if (!emojiInfo) {
-      // 絵文字が見つからない場合は元の絵文字を返す
-      return emoji;
-    }
-
-    return generateFluentEmojiUrl(emojiInfo, style, skinTone);
-  } catch (error) {
-    // エラーが発生した場合は元の絵文字を返す
+  if (!emojiInfo) {
+    // 絵文字が見つからない場合は元の絵文字を返す
     return emoji;
   }
+
+  return generateFluentEmojiUrl(emojiInfo, style, skinTone);
 }
 
 // 型定義のエクスポート
