@@ -15,14 +15,20 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc && esbuild src/index.ts --bundle --outfile=dist/index.js --format=esm --external:@fluent-emoji-converter/types --external:@fluent-emoji-converter/core --external:unicode-emoji-json",
-    "typecheck": "tsc",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:cov": "vitest run --coverage",
-    "dev": "esbuild src/index.ts --bundle --outfile=dist/index.js --format=esm --watch",
+    "dev": "tsc --watch",
     "prepublishOnly": "pnpm build"
   },
-  "keywords": ["emoji", "fluent", "converter", "microsoft", "typescript"],
+  "keywords": [
+    "emoji",
+    "fluent",
+    "converter",
+    "microsoft",
+    "typescript"
+  ],
   "author": "suntory-n-water",
   "license": "MIT",
   "repository": {
@@ -30,12 +36,11 @@
     "url": "https://github.com/suntory-n-water/fluent-emoji-converter.git"
   },
   "dependencies": {
-    "@fluent-emoji-converter/types": "workspace:*",
     "@fluent-emoji-converter/core": "workspace:*"
   },
   "devDependencies": {
+    "@fluent-emoji-converter/types": "workspace:*",
     "typescript": "^5.8.3",
-    "esbuild": "^0.19.0",
     "vitest": "^3.2.4",
     "@vitest/coverage-v8": "^3.2.4"
   }

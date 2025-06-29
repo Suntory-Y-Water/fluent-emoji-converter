@@ -13,11 +13,11 @@
     }
   },
   "scripts": {
-    "build": "tsc && esbuild src/index.ts --bundle --outfile=dist/index.js --format=esm --external:@fluent-emoji-converter/types --external:unicode-emoji-json",
-    "typecheck": "tsc",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:cov": "vitest run --coverage",
-    "dev": "esbuild src/index.ts --bundle --outfile=dist/index.js --format=esm --watch"
+    "dev": "tsc --watch"
   },
   "dependencies": {
     "unicode-emoji-json": "^0.8.0"
@@ -25,7 +25,6 @@
   "devDependencies": {
     "@fluent-emoji-converter/types": "workspace:*",
     "@vitest/coverage-v8": "^3.2.4",
-    "esbuild": "^0.19.0",
     "typescript": "^5.8.3",
     "vitest": "^3.2.4"
   }

@@ -1,0 +1,49 @@
+name: GitHub Actions Security Check
+
+on:
+  push:
+    branches:
+      - 'feature-*'
+      - 'feature/*'
+      # 依存関係が更新されたときにも一応チェックする
+      - 'dependabot/*'
+    paths: ['**/*.ts', '**/*.tsx', '**/*.js', '.github/**', '**/*.json']
+  pull_request:
+    branches:
+      - main
+    paths: ['**/*.ts', '**/*.tsx', '**/*.js', '.github/**', '**/*.json']
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  actions-security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      # 全てコミットハッシュ形式で指定する
+      # @see https://zenn.dev/kou_pg_0131/articles/gha-static-checker
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # GitHub Actions Lint - actionlint
+      - name: Run actionlint
+        uses: koki-develop/github-actions-lint/actionlint@62dfef5c9854a07712bad7af3bee7edb0c1109b1 # v1.4.1
+
+      # GitHub Actions Lint - ghalint
+      - name: Run ghalint
+        uses: koki-develop/github-actions-lint/ghalint@62dfef5c9854a07712bad7af3bee7edb0c1109b1 # v1.4.1
+
+      # GitHub Actions Lint - zizmor
+      - name: Run zizmor
+        uses: koki-develop/github-actions-lint/zizmor@62dfef5c9854a07712bad7af3bee7edb0c1109b1 # v1.4.1
+        with:
+          github-token: ${{ github.token }}
+          persona: auditor

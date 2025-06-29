@@ -1,12 +1,12 @@
-export type EmojiStyle = "3d" | "color" | "flat" | "high-contrast";
+export type EmojiStyle = '3d' | 'color' | 'flat' | 'high-contrast';
 
 export type SkinTone =
-  | "default"
-  | "light"
-  | "medium-light"
-  | "medium"
-  | "medium-dark"
-  | "dark";
+  | 'default'
+  | 'light'
+  | 'medium-light'
+  | 'medium'
+  | 'medium-dark'
+  | 'dark';
 
 export type ConvertOptions = {
   emoji: string;

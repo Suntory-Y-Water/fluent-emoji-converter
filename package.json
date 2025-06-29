@@ -10,8 +10,6 @@
     "test:cov": "pnpm --filter \"./packages/*\" test:cov",
     "typecheck": "pnpm --filter \"./packages/*\" typecheck",
     "lint": "pnpm --filter \"./packages/*\" lint",
-    "lint:warn": "pnpm --filter \"./packages/*\" lint:warn",
-    "lint:fix": "pnpm --filter \"./packages/*\" lint:fix",
     "dev": "pnpm --filter \"./packages/*\" dev"
   },
   "keywords": [
