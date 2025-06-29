@@ -6,8 +6,8 @@
 
 OS依存の絵文字表示を統一するため、絵文字を引数に渡すとFluentEmojiのURLを返すOSSライブラリです。
 
-> [!WARNING]
-> 本リポジトリは2025年6月29日時点、npmライブラリへ公開していません
+> [!NOTE]
+> 本ライブラリは現在ベータ版として公開されています
 
 ## 特徴
 
@@ -20,11 +20,11 @@ OS依存の絵文字表示を統一するため、絵文字を引数に渡すと
 ## インストール
 
 ```bash
-npm install fluent-emoji-converter
+npm install @fluent-emoji-converter/core
 # または
-pnpm add fluent-emoji-converter
+pnpm add @fluent-emoji-converter/core
 # または
-yarn add fluent-emoji-converter
+yarn add @fluent-emoji-converter/core
 ```
 
 ## 使用方法
@@ -32,7 +32,7 @@ yarn add fluent-emoji-converter
 ### 基本的な使用
 
 ```typescript
-import { convertEmoji } from 'fluent-emoji-converter'
+import { convertEmoji } from '@fluent-emoji-converter/core'
 
 // 基本的な絵文字変換
 const url = convertEmoji({ emoji: '😇', style: 'flat' })
@@ -111,8 +111,7 @@ pnpm dev
 
 ```
 packages/
-├── types/           # @fluent-emoji-converter/types - 共通型定義
-└── core/            # fluent-emoji-converter - メインロジック
+└── core/            # @fluent-emoji-converter/core - メインロジック
 ```
 
 ## API リファレンス
@@ -138,7 +137,7 @@ packages/
 #### 使用例
 
 ```typescript
-import { convertEmoji } from 'fluent-emoji-converter'
+import { convertEmoji } from '@fluent-emoji-converter/core'
 
 // デフォルト設定での変換
 const url1 = convertEmoji({ emoji: '😀' }) // style='flat'がデフォルト

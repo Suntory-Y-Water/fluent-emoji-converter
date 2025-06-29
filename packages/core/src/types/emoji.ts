@@ -1,3 +1,7 @@
+/**
+ * 絵文字関連の型定義
+ */
+
 export type EmojiStyle = '3d' | 'color' | 'flat' | 'high-contrast';
 
 export type SkinTone =
@@ -8,12 +12,6 @@ export type SkinTone =
   | 'medium-dark'
   | 'dark';
 
-export type ConvertOptions = {
-  emoji: string;
-  style?: EmojiStyle;
-  skinTone?: SkinTone;
-};
-
 export interface EmojiData {
   name: string;
   slug: string;
@@ -22,9 +20,4 @@ export interface EmojiData {
   unicode: string;
   supportsSkinTone: boolean;
   supportsHighContrast: boolean;
-}
-
-export interface FluentEmojiConfig {
-  baseUrl: string;
-  defaultStyle: EmojiStyle;
 }

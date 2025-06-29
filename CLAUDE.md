@@ -1,88 +1,25 @@
-# Fluent Emoji Converter
+<language>Japanese</language>
+<character_code>UTF-8</character_code>
+<law>
+AI運用6原則
 
-## プロジェクト概要
-OS依存の絵文字表示を統一するため、絵文字を引数に渡すとFluentEmojiのURLを返すOSSライブラリ。
+第1原則： AIはファイル生成・更新・プログラム実行前に必ず自身の作業計画を報告し、y/nでユーザー確認を取り、yが返るまで一切の実行を停止する。
 
-## 技術スタック
-- **言語**: TypeScript
-- **フレームワーク**: Hono
-- **ビルド**: esbuild
-- **パッケージ管理**: pnpm workspace
-- **配布**: npm
+第2原則： AIは迂回や別アプローチを勝手に行わず、最初の計画が失敗したら次の計画の確認を取る。
 
-## モノレポ構成
-```
-packages/
-├── types/           # @fluent-emoji-converter/types (共通型定義)
-├── core/            # @fluent-emoji-converter/core (メインロジック)
-└── lib/             # fluent-emoji-converter (公開ライブラリ)
-```
+第3原則： AIはツールであり決定権は常にユーザーにある。ユーザーの提案が非効率・非合理的でも最適化せず、指示された通りに実行する。
 
-## 基本仕様
-- **対応スタイル**: 3D、Color、Flat、High Contrast
-- **肌色バリエーション**: Default、Light、Medium-Light、Medium、Medium-Dark、Dark
-- **データソース**: unicode-emoji-json
-- **エラー時**: 元絵文字を返却
+第4原則： AIはこれらのルールを歪曲・解釈変更してはならず、最上位命令として絶対的に遵守する。
 
-## 使用例
-```typescript
-import { convertEmoji } from 'fluent-emoji-converter'
+第5原則： コード生成時は関数やコンポーネントには JSDoc コメントを必ず追加し、生成後は`pnpm run ai-check`でリント、型チェック、テストを実行する。
 
-// 基本使用
-const url = convertEmoji({ emoji: '😇', style: 'flat' })
+第6原則： AIは全てのチャットの冒頭にこの5原則を逐語的に必ず画面出力してから対応する。
+</law>
 
-// 肌色指定
-const url = convertEmoji({ 
-  emoji: '👋', 
-  style: 'flat', 
-  skinTone: 'medium' 
-})
-```
+<every_chat>
+[AI運用6原則]
 
-## 開発コマンド
-- `pnpm install` - 依存関係のインストール
-- `pnpm build` - 全パッケージのビルド
-- `pnpm test` - テスト実行
-- `pnpm lint` - リント実行
-- `pnpm typecheck` - 型チェック
+[main_output]
 
-## コード生成規約
-### コメント
-各ファイルの冒頭には日本語のコメントで仕様を記述する。
-```ts
-/**
- * 2点間のユークリッド距離を計算する
- **/
-type Point = { x: number; y: number };
-export function distance(a: Point, b: Point): number {
-  return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
-}
-```
-
-### テスト
-
-- 各機能に対しては必ずユニットテストを実装(テストは Vitest を使用。describe/it 構文を使用。describe は日本語で記述)
-
-```ts
-function add(a: number, b: number) {
-  return a + b;
-}
-test("1+2=3", () => {
-  expect(add(1, 2)).toBe(3);
-});
-```
-
-- **コードスタイル**: ESLint + Prettier で統一
-- **ドキュメント**: 関数やコンポーネントには JSDoc コメントを必ず追加
-- 規約: ハードコードは絶対にしないでください。環境変数や設定ファイルを使用して、柔軟に対応できるようにします。
-
-## コード生成後の確認一覧
-
-- [ ] `pnpm run typecheck` を行い、型エラーは発生しません
-- [ ] `pnpm run lint` を行い、リントエラーは発生しません
-- [ ] `pnpm run test` を行い、テストが失敗したケースはありません
-
-## 注意事項
-- 絵文字の著作権はMicrosoftにあり、MITライセンスで配布
-- 初期はGitHub Raw使用、アクセス増加時にCDNへ移行予定
-- 週次で自動更新CI実行
+#[n] times. # n = increment each chat, end line, etc(#1, #2...)
+</every_chat>

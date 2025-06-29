@@ -10,7 +10,8 @@
     "test:cov": "pnpm --filter \"./packages/*\" test:cov",
     "typecheck": "pnpm --filter \"./packages/*\" typecheck",
     "lint": "pnpm --filter \"./packages/*\" lint",
-    "dev": "pnpm --filter \"./packages/*\" dev"
+    "dev": "pnpm --filter \"./packages/*\" dev",
+    "ai-check": "pnpm run lint && pnpm run typecheck && pnpm run test"
   },
   "keywords": [
     "emoji",
@@ -24,7 +25,6 @@
     "@eslint/js": "^9.30.0",
     "@types/node": "^24.0.7",
     "@vitest/coverage-v8": "^3.2.4",
-    "esbuild": "^0.19.0",
     "eslint": "^9.30.0",
     "prettier": "^3.6.2",
     "typescript": "^5.8.3",

@@ -108,15 +108,6 @@ describe('convertEmoji', () => {
     expect(result).toContain('_high_contrast_default.svg');
   });
 
-  it('カスタム設定を使用できる', () => {
-    const customConfig = {
-      baseUrl: 'https://example.com/assets',
-      defaultStyle: 'color' as const,
-    };
-    const result = convertEmoji({ emoji: '😀' }, customConfig);
-    expect(result).toContain('https://example.com/assets');
-  });
-
   it('エラーが発生した場合は元の絵文字を返す', () => {
     const result = convertEmoji({ emoji: 'invalid' });
     expect(result).toBe('invalid');

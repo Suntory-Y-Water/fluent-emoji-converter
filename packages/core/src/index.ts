@@ -7,15 +7,12 @@ import type {
   EmojiStyle,
   SkinTone,
   EmojiData,
-  FluentEmojiConfig,
-} from '@fluent-emoji-converter/types';
-import emojiData from 'unicode-emoji-json';
+} from './types/index.js';
+import emojiData from 'unicode-emoji-json/data-by-emoji.json' with { type: 'json' };
 
-const DEFAULT_CONFIG: FluentEmojiConfig = {
-  baseUrl:
-    'https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets',
-  defaultStyle: 'flat',
-};
+const BASE_URL =
+  'https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets';
+const DEFAULT_STYLE: EmojiStyle = 'flat';
 
 /**
  * 絵文字データを検索して対応する情報を取得
@@ -111,8 +108,7 @@ function fixEmojiSlug(slug: string): string {
 function generateFluentEmojiUrl(
   emojiData: EmojiData,
   style: EmojiStyle,
-  skinTone?: SkinTone,
-  config: FluentEmojiConfig = DEFAULT_CONFIG
+  skinTone?: SkinTone
 ): string {
   const stylePath = styleToPath(style);
   const styleParam = style.replace('-', '_');
@@ -127,7 +123,7 @@ function generateFluentEmojiUrl(
 
   // 肌色非対応の場合
   if (!emojiData.supportsSkinTone) {
-    return `${config.baseUrl}/${encodedName}/${stylePath}/${fixedSlug}_${styleParam}.${extension}`;
+    return `${BASE_URL}/${encodedName}/${stylePath}/${fixedSlug}_${styleParam}.${extension}`;
   }
 
   // 肌色対応の場合（必ずskinToneが存在）
@@ -136,21 +132,17 @@ function generateFluentEmojiUrl(
 
   // ハイコントラストで肌色指定がある場合はデフォルトにフォールバック
   if (style === 'high-contrast') {
-    return `${config.baseUrl}/${encodedName}/Default/${stylePath}/${fixedSlug}_${styleParam}_default.${extension}`;
+    return `${BASE_URL}/${encodedName}/Default/${stylePath}/${fixedSlug}_${styleParam}_default.${extension}`;
   }
 
-  return `${config.baseUrl}/${encodedName}/${skinTonePath}/${stylePath}/${fixedSlug}_${styleParam}_${skinToneParam}.${extension}`;
+  return `${BASE_URL}/${encodedName}/${skinTonePath}/${stylePath}/${fixedSlug}_${styleParam}_${skinToneParam}.${extension}`;
 }
 
 /**
  * 絵文字を FluentEmoji の URL に変換する
  */
-export function convertEmoji(
-  options: ConvertOptions,
-  config?: FluentEmojiConfig
-): string {
-  const { emoji, style = DEFAULT_CONFIG.defaultStyle, skinTone } = options;
-  const finalConfig = { ...DEFAULT_CONFIG, ...config };
+export function convertEmoji(options: ConvertOptions): string {
+  const { emoji, style = DEFAULT_STYLE, skinTone } = options;
 
   try {
     const emojiInfo = findEmojiData(emoji);
@@ -160,11 +152,17 @@ export function convertEmoji(
       return emoji;
     }
 
-    return generateFluentEmojiUrl(emojiInfo, style, skinTone, finalConfig);
+    return generateFluentEmojiUrl(emojiInfo, style, skinTone);
   } catch (error) {
     // エラーが発生した場合は元の絵文字を返す
     return emoji;
   }
 }
 
-export { DEFAULT_CONFIG };
+// 型定義のエクスポート
+export type {
+  ConvertOptions,
+  EmojiStyle,
+  SkinTone,
+  EmojiData,
+} from './types/index.js';
